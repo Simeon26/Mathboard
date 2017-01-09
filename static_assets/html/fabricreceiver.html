@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="shortcut icon" href="/static/img/icons/favicon.ico" type="image/x-icon">
+  
+  <title>Mathboard</title>
+
+<!-- Javascript and CSS -->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/jquery.cookie.min.js"></script>s
+  <script src="/static/libs/fabric/fabric.min.js"></script>
+  <script src="/static/libs/bootstrap/bootstrap.min.js"></script>
+  <script src="/static/js/canvasReceiver.js"></script>
+  <link href="/static/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/canvasReceiver.css" rel="stylesheet">
+</head>
+ 
+<body>
+  <!--Start of navigation bar-->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/" id="mathboard">Mathboard</a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="/features">Discover</a></li>
+          <li><a href="/help">Help</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+		  <li><a id="save-canvas" download="Mathboard.png" style="cursor: pointer;"><span class="glyphicon glyphicon-download-alt"></span> Download</a></li>
+          <li><a onclick="openChat()" style="cursor: pointer;"><span class="glyphicon glyphicon-envelope"></span> Chat</a></li>
+          <li><a><span class="glyphicon glyphicon-user"></span> <span id="roomnumber">{Room}</span></a></li>
+          <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Leave Room</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </nav>
+  <!--End of navigation bar-->
+
+  <!-- Chat Sidebar -->
+  <div id="chatbar" class="toggle scroll-pane">
+    <div id="messages">
+      <button id="closeChat" type="button" class="close" onclick="openChat()">&times;</button>
+      <ul id="messageList">
+      </ul>
+    </div>
+
+    <div id="newMessage">
+      <div class="input-group">
+       <textarea class="form-control" rows="1" id="messageBox" style="resize:vertical"></textarea>
+       <span id="sendMessage" class="input-group-addon btn btn-primary" onClick="sendMessage()">Send</span>
+      </div>
+    </div>
+  </div>
+  <!-- End of Sidebar -->
+
+<!-- Canvas -->
+  <canvas id="c"></canvas>
+
+<!-- Enter script -->
+  <script type="text/javascript">
+    $("#messageBox").keyup(function(event){
+            if(event.keyCode == 13){
+               sendMessage(); 
+            }
+        });
+    });
+  </script>
+ 
+</body>
+</html>

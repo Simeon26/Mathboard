@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/static/img/icons/favicon.ico" type="image/x-icon">
+
+    <title>Mathboard</title>
+
+    <link href="/static/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/cover.css" rel="stylesheet">
+
+    <style>
+      .content-wrapper {
+          margin-top: 100px;
+          margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+<!-- navbar -->
+    <div class="site-wrapper backgroundcover">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix" style="z-index: 0;">
+            <div class="inner">
+              <a href="/"><h3 class="masthead-brand"><b>Mathboard</b></h3></a>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/features">Discover</a></li>
+                  <li class="active"><a href="/help">Help</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+<!-- page content -->
+          <div class="content-wrapper" style="position: relative; z-index: 1;">
+            <div class="row">
+              <div class="span6">
+                <h1 class="cover-heading fourofour">How does Mathboard work?</h1>
+                <hr>
+                Click on the type of user you are for a guide on using Mathboard.</br></br>
+                <b class="fix-large toggleS">Student</b></br>
+                <div id="student" class="fixing-class" style="display: none;">
+                  
+                  <p class="fix-p">
+                    To begin you must enter your name into the given box, then press 'Join'.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/student1.png">
+                  </p>
+
+                  <p class="fix-p">
+                    A callout will appear on your screen. You must enter the room number given to you by your teacher, then press 'Join'.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/student2.png">
+                  </p>
+
+                  <p class="fix-p">
+                    You will now enter the session with your teacher and peers.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/student3.png">
+                  </p>
+
+                  <p class="fix-p">
+                    Press 'Chat' to begin collaborating with the teacher or other students, alternativley to leave the room press 'Leave Room'.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/student4.png">
+                  </p>
+                </div></br>
+
+
+                  <b class="fix-large toggleT">Teacher</b></br>
+                <div class="fixing-class" style="display: none;" id="teacher">
+                  <p class="fix-p">
+                    You must first begin by starting a 'New Room'.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/teacher1.png">
+                  </p>
+
+                  <p class="fix-p">
+                    Next you must next give your students the session ID so that they can access your private Mathboard.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/teacher2.png">
+                  </p>
+
+                  <p class="fix-p">
+                    Now start your lesson, get creative!
+                    </br>
+                    <img class="fix-img" src="/static/img/help/teacher3.png">
+                  </p>
+
+                  <p class="fix-p">
+                    Press 'Chat' to begin collaborating with students, when complete to end the session the room press 'Leave Room'.
+                    </br>
+                    <img class="fix-img" src="/static/img/help/student4.png">
+                  </p>
+
+                  <p class="fix-p">
+                    Don't forget to save your canvas if you wish!
+                    </br>
+                    <img class="fix-img" src="/static/img/help/teacher5.png">
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="inner cover">
+            <div class="form-group fourofour">
+              </br>Is there anything else you need help with?</br>Email us at teamk@mathboard.co.uk</br></br>
+            <p class="lead">
+              <a onclick="goHome()" class="btn btn-lg btn-default" id="join">Start using Mathboard</a>
+            </p>
+          </div>
+
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+<!-- javascript -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/libs/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      function join(){
+        var room = "fabricreceiver.html#".concat($("#usr").val());
+        window.location.href = room;
+      }
+      function sendMessage(){
+        window.location.href = '/404';
+      }
+      function goHome() {
+        window.location.href = '/';
+      }
+      $(document).ready(function () {
+        $(".span6").on("click", ".toggleS", function(){
+          $("#student").toggle();
+        })
+
+        $(".span6").on("click", ".toggleT", function(){
+          $("#teacher").toggle();
+        })
+      })
+
+    </script>
+    
+  </body>
+</html>

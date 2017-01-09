@@ -1,0 +1,81 @@
+#mathboard {
+    color: white;
+    cursor: pointer;
+    background-color: red;
+}
+
+.navbar {
+    margin-bottom: 0px;
+    border-radius: 0px;
+}
+
+#c {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+#chatbar {
+    top: 50px;
+    right: 0;
+    position: fixed;
+    z-index: 1000;
+    background-color: #222;
+    width: 30%;
+    height: 100%;
+}
+
+#chatbar.toggle {
+    visibility: hidden;
+}
+
+@media (max-width: 767px) {
+   #chatbar {
+       width: 100%;
+   }
+}
+
+#newMessage {
+    width: 100%;
+    padding: 10px;
+    position: absolute;
+    bottom: 50px;
+}
+
+#sendMessage {
+    background-color: #00bfff;
+    color: #000000
+}
+
+#messageList {
+    padding-left: 15px;
+    padding-right: 15px;
+    list-style: none;
+}
+
+#messages {
+    height: calc(100% - 75px);
+    width: calc(100% + 18px);
+    overflow-y: scroll;
+    color: rgb(180,180,180);
+    padding: 5px 15px 5px 15px;
+}
+
+#message {
+    color: white;
+    list-style: none;
+    word-wrap: break-word;
+}
+
+#closeChat {
+    position: absolute;
+    right:0;
+    font-size: 40px;
+    color: white;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.teacher{
+    color: rgb(220,220,220);
+    font-style: italic;
+}

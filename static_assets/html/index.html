@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/static/img/icons/favicon.ico" type="image/x-icon">
+
+    <title>Mathboard</title>
+
+<!-- Javascript and CSS -->
+    <script src="/static/libs/bootstrap/bootstrap.min.js"></script>
+    <link href="/static/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/cover.css" rel="stylesheet">
+
+    
+  </head>
+
+  <body>
+
+<!-- navbar -->
+    <div class="site-wrapper backgroundcover">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+	     <a href="/"><h3 class="masthead-brand"><b>Mathboard</b></h3></a>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="/">Home</a></li>
+                  <li><a href="/features">Discover</a></li>
+                  <li><a href="/help">Help</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Welcome.</h1>
+            <div class="form-group">
+              <input type="text" class="form-control" id="name" placeholder="Your Name">
+            </div>
+            <p class="lead">
+              <a onclick="join()" class="btn btn-lg btn-default" id="join">Join</a>
+              <a onclick="create()" class="btn btn-lg btn-default" id="create">New Room</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- No name error modal -->
+    <div class="modal fade" id="errorModal" role="dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p style="text-align: center">Please supply a display name</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- End of error modal-->
+
+    <!-- Start of room modal -->
+    <div class="modal fade" id="roomModal" role="dialog">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Join Room</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <input type="text" class="form-control" id="roomNum" placeholder="Room Number">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="joinRoom()" id="join">Join</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of room modal -->
+
+    <div class="footer">
+      By using this web service, you agree to accept cookies in order for us to improve your user experience.  <b class="cookiesclose" style="cursor: pointer;">[X]</b>
+    </div>
+
+<!-- javascript -->
+    <script type="text/javascript">
+      function create() {
+        if (checkName()) {
+          var number = Math.floor((Math.random()*9999)+1);
+          window.location = "/draw?r=" + number;
+        }
+      }
+
+      function join() {
+        if (checkName()) {
+          $('#roomModal').modal('show');
+        }
+      }
+
+      function joinRoom() {
+        window.location = "/view?r=" + $("#roomNum").val();
+      }
+
+      function checkName() {
+        var name = $("#name").val();
+        if (name === '') {
+          $('#errorModal').modal('show');
+          return false;
+        }
+
+        document.cookie = "name=" + name;
+        return true;
+      }
+
+      document.querySelector(".cookiesclose").addEventListener("click", function(){
+      document.querySelector(".footer").style.display = "none";
+      });
+
+      
+    </script>
+
+    <script src="/static/js/jquery.min.js"></script>
+	  <script src="/static/libs/bootstrap/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      $("#roomNum").keyup(function(event){
+          if(event.keyCode == 13){
+              joinRoom();
+          }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+#mathboard {
+    background-color: #1a5bbf;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar {
+    margin-bottom: 0px;
+    border-radius: 0px;
+}
+
+.coloursquare {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.rgbSlider {
+    margin-left: 10px;
+    width:150px !important;
+    height: 30px;
+    writing-mode: lr-bt; /* IE */
+    -webkit-appearance: slider-horizontal; /* WebKit */
+    display: inline-block !important;
+}
+
+.comment{
+    color: #DCDCDC;
+}
+
+#c {
+    overflow-x: hidden;
+}
+
+.border-fixing{
+    border-width: 1px 0;
+}
+
+#sidebar {
+    z-index: 1000;
+    background-color: #222;
+    display: inline-block;
+    position: fixed;
+    height: 100%;
+    top: 50px;
+    width: 225px;
+    color: white;
+    overflow-y: auto;
+    user-select: none;
+}
+
+#sidebar.toggle {
+    left: -200px;
+    padding-left: 0;
+    width: 0;
+}
+
+#waSearch {
+    z-index: 500;
+    position: fixed;
+    left: 80px;
+    bottom: 15px;
+    width: calc(100% - 150px);
+}
+
+#waSearch.hide {
+    visibility: hidden;
+}
+
+#waSearch.toggle {
+    left: 305px;
+    width: calc(100% - 375px);
+}
+
+#waSearch.chat {
+    width: calc(70% - 150px);
+}
+
+#waSearch.toggle.chat {
+    left: 305px;
+    width: calc(70% - 235px);
+}
+
+#waIcon {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    z-index: 500;
+}
+
+#waIcon.toggle {
+    left: 235px;
+}
+
+.side {
+    padding-left: 5px;
+    padding-bottom: 10px;
+}
+
+.side li {
+    color: #FFFFFF;    
+    line-height: 40px;
+    display: block;
+    text-decoration: none;  
+}
+
+#morePage {
+    font-size: 45px;
+    position: absolute;
+    top: calc(100% - 60px);
+    left: calc(100% - 60px);
+}
+
+#morePage.toggle {
+    left: calc(70% - 60px);
+}
+
+#chatbar {
+    top: 0;
+    right: 0;
+    position: fixed;
+    z-index: 1000;
+    background-color: #222;
+    width: 25%;
+    height: 100%;
+}
+
+#chatbar.toggle {
+    visibility: hidden;
+}
+
+@media (max-width: 767px) {
+   #chatbar {
+       width: 100%;
+   }
+}
+
+#newMessage {
+    width: 100%;
+    padding: 10px;
+    position: absolute;
+    bottom: 0px;
+}
+
+#sendMessage {
+    background-color: #00bfff;
+    color: #000000
+}
+
+#messageList {
+    padding-left: 15px;
+    padding-right: 15px;
+    list-style: none;
+}
+
+.teacher{
+    color: rgb(220,220,220);
+    font-style: italic;    
+}
+
+#messages {
+    padding-top:60px;
+    height: calc(100% - 75px);
+    width: calc(100% + 18px);
+    overflow-y: scroll;
+}
+
+#message {
+    color: white;
+    list-style: none;
+    word-wrap: break-word;
+}
+
+.myMessage {
+    color: red !important;
+}
+
+#closeChat {
+    position: absolute;
+    right:0;
+    font-size: 40px;
+    color: white;
+    text-align: right;
+    padding-right: 20px;
+}

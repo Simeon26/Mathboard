@@ -1,0 +1,35 @@
+runtime: python27
+api_version: 1
+threadsafe: false
+
+libraries:
+- name: webapp2
+  version: latest
+- name: setuptools
+  version: "0.6c11"
+
+handlers:
+- url: /draw
+  script: draw.app
+- url: /wolf
+  script: wolf.app
+- url: /comment
+  script: comment.app
+- url: /features
+  script: features.app
+- url: /404
+  script: 404.app
+- url: /help
+  script: help.app
+- url: /view
+  script: view.app
+- url: /static
+  static_dir: static_assets
+  application_readable: true
+- url: /clean
+  script: clean_old_rooms.app
+- url: /
+  script: home.app
+- url: /.*
+  script: 404.app
+

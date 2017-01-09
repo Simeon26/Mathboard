@@ -1,0 +1,46 @@
+\chapter{Relevant statistics and Libraries}\label{ch:statsAndLibs}\vspace{-10mm}
+
+\section{Lines of code counts}
+
+\vspace{-7mm}
+\begin{center}
+\begin{tabular}{ l c c c }
+ & Source A (written) & Source B (adapted) & Source C (included) \\
+ Server side (Python) & 182 & 4520 & 0 \\ 
+ Client side (JavaScript, HTML, CSS) & 1369 & 0 & 58314 \\  
+ Total & 1551 & 4520 & 58314
+\end{tabular}
+\end{center}
+
+\section{Libraries used}
+A number of libraries were used as the basis for the project. They are listed below, split by those operating on the client-side of the application (JavaScript, HTML, CSS) and those on the GAE platform (Python).
+
+\subsection{Client-side libraries}
+\begin{itemize}
+   \item Bootstrap - 3.3.7 - \url{getbootstrap.com} - To ease styling of the app
+   \item Fabric.js - 1.6.6 - \url{fabricjs.com} - A wrapper for the HTML5 canvas with serialize functionality
+   \item jQuery - 1.12.4 - \url{jquery.com} - For manipulation of the DOM
+\end{itemize}
+
+\subsection{Server-side libraries}
+The majority of these were GAE libraries required for using the platform's features. These were:
+\begin{itemize}
+   \item webapp2 - For handling requests as a WSGI application
+   \item Setuptools - Used for managing imported python packages
+   \item codecs - For reading text files
+   \item os - Getting the path of the active project
+   \item sys - Basic python module for running on GAE
+   \item cgi - Alternative request handler
+   \item urllib(2) - For fetching data via secondary requests
+   \item random - For generating the random room codes
+   \item db - For reading and writing data to the Google DataStore
+\end{itemize}
+The server-side also made use of:
+\begin{itemize}
+   \item Wolframalpha - \url{wolframalpha.com} - For querying the WolframAlpha Engine
+   \item Jaraco.itertools - \url{github.com/jaraco/jaraco.itertools} - Util package for iteration problems
+   \item More-itertools - \url{pypi.python.org/pypi/more-itertools} - Further iteration based utilities
+   \item Inflect - \url{pypi.python.org/pypi/inflect} - Used for correct usage of plurals in written parts
+   \item Six - \url{pypi.python.org/pypi/six} - Used too soften the differences between different python versions
+   \item Xmltodict - \url{github.com/martinblech/xmltodict} - XML parser and encoder
+\end{itemize}

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="shortcut icon" href="/static/img/icons/favicon.ico" type="image/x-icon">
+	
+  <title>Mathboard</title>
+
+
+<!-- Javascript and CSS -->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/jquery.cookie.min.js"></script>
+  <script src="/static/libs/fabric/fabric.min.js"></script>
+  <script src="/static/libs/bootstrap/bootstrap.min.js"></script>
+  <link href="/static/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/canvas.css" rel="stylesheet">
+</head>
+
+<body onload="loadfavourites();">
+  <!--Start of navigation bar-->
+<nav class="navbar navbar-inverse navbar-fixed-top border-fixing">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/" id="mathboard">Mathboard</a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="nav navbar-nav">
+                  <li><a href="/features">Discover</a></li>
+                  <li><a href="/help">Help</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a><span class="glyphicon glyphicon-pencil"></span> <span class="drawinginfo">On</span></a></li>
+        <li><a>Width: <span class="info">10</span></a></li>
+        <li><a>Colour: <span class="colourinfo">#000000</span></a></li>
+        <li><a onclick="openChat()" style="cursor: pointer;"><span class="glyphicon glyphicon-envelope"></span> Chat</a></li>
+        <li><a><span class="glyphicon glyphicon-user"></span> <div id="roomnumber" style="display:inline-block">{Room}</div></a></li>
+        <li><a href="/"><span class="glyphicon glyphicon-log-out"></span> Leave</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</nav>
+<!--End of navigation bar-->
+
+<!-- sidebar -->
+<div id="sidebar">
+  <ul class="side">  
+    <li><b>Toggle:</b></li>
+    <li><input type="button" class="btn btn-info toggledraw" onclick="turnoffdrawing()" id="toggledraw" value="Draw OFF">
+        <input type="button" class="btn btn-info" onclick="background()" id="background" value="Background"></li>
+
+    <li><b>Canvas:</b></li>
+    <li><a id="save-canvas" class="btn btn-info" download="Mathboard.png" href=""	>Save</a>
+        <button id="clear-canvas" class="btn btn-info" onclick="cleardrawing()">Clear</button></li>
+
+    <li><b>Object:</b></li>
+    <li><button id="delete-object" class="btn btn-info" onclick="deleteobject()">Delete</button></li>
+
+    <!-- <li><b>Favourites:</b></li>
+    <li><button id="save-canvas" class="btn btn-info" onclick="savefavourites()">Save</button>
+        <button id="load-canvas" class="btn btn-info" onclick="loadfavourites()">Load</button>
+        <button id="clear-canvas" class="btn btn-info" onclick="clearfavourites()">Clear</button></li> -->
+
+    <li><b>Pen:</b></li>
+
+    <li><input type="range" value="5" min="1" max="80" id="drawing-line-width" style="width:190px; height: 30px; writing-mode: lr-bt; /* IE */
+          -webkit-appearance: slider-horizontal; /* WebKit */" onchange="changewidth()"></li>
+
+    <li><input style="width: 43px !important" height="30px" type="color" value="#000000" id="drawing-color" onchange="changecolor()">
+      <button style="width: 50px" id="drawing-line-color-save" class="btn btn-info" onclick="savecolor()">Save </button></li>
+
+    <li><b>Common:</b></li>
+
+    <li id="common">
+      <div class="coloursquare" style="background-color: black;"></div>
+      <div class="coloursquare" style="background-color: white;"></div>
+      <div class="coloursquare" style="background-color: blue;"></div>
+      <div class="coloursquare" style="background-color: green;"></div>
+      <div class="coloursquare" style="background-color: red;"></div>
+      <div class="coloursquare" style="background-color: yellow;"></div>
+      <div class="coloursquare" style="background-color: purple;"></div>
+      <div class="coloursquare" style="background-color: cyan;"></div>
+      <div class="coloursquare" style="background-color: grey;"></div>
+      <div class="coloursquare" style="background-color: orange;"></div>
+    </li>
+
+    <li><b>Favourites:</b></li>
+    <li class="nosaves">No Favourites</li>
+    <li id="saves"></li>
+  </ul>
+</div>
+<!--End of sidebar-->
+  
+    <!-- Chat Sidebar -->
+  <div id="chatbar" class="toggle scroll-pane">
+    <div id="messages">
+      <button id="closeChat" type="button" class="close" onclick="openChat()">&times;</button>
+      <ul id="messageList">
+      </ul>
+    </div>
+
+    <div id="newMessage">
+      <div class="input-group">
+       <textarea class="form-control" rows="1" id="messageBox" style="resize:vertical"></textarea>
+       <span id="sendMessage" class="input-group-addon btn btn-primary">Send</span>
+      </div>
+    </div>
+  </div>
+  <!-- End of Sidebar -->
+
+<!-- Canvas -->
+<canvas id="c" style="margin-left:225px; position: absolute;"></canvas>
+
+<!-- logic drawing scripts -->
+<script>
+	var canvas = new fabric.Canvas('c', {
+		backgroundColor: "white"
+	});
+	canvas.isDrawingMode = true;
+	canvas.backgroundColor = "white";
+	canvas.freeDrawingBrush.color = "rgb(0,0,0)";
+
+	window.addEventListener('resize', resizeCanvas, false);
+
+	function resizeCanvas() {
+		canvas.setHeight(window.innerHeight);
+		canvas.setWidth(window.innerWidth - 225);
+		canvas.renderAll();
+	}
+
+	function downloadCanvas() {
+		var realDownloadButton = $("<a style='display:none;'>Download the dataURL</a>");
+		realDownloadButton.attr("download", "Mathboard.png");
+		realDownloadButton.attr("href", canvas.toDataURL('png'));
+		$('body').append(realDownloadButton);
+		realDownloadButton.click();
+		realDownloadButton.remove();
+	}
+
+	function background() {
+
+		if (canvas.backgroundColor === "white") {
+			canvas.backgroundColor = "black";
+		} else {
+			canvas.backgroundColor = "white";
+		}
+
+		canvas.renderAll();
+	}
+
+	// resize on init
+	resizeCanvas();
+
+	function openChat() {
+		$("#chatbar").toggleClass("toggle");
+        $("#waSearch").toggleClass("chat");
+	}
+
+	function turnoffdrawing() {
+		if (canvas.isDrawingMode) {
+			changetext = "Draw ON";
+			$(".drawinginfo").html("Off");
+		} else {
+			changetext = "Draw OFF";
+			$(".drawinginfo").html("On");
+		}
+		$(".toggledraw").attr("value", changetext);
+		canvas.isDrawingMode = !canvas.isDrawingMode;
+	}
+
+	function cleardrawing() {
+		canvas.clear();
+		canvas.setBackgroundColor('white', canvas.renderAll.bind(canvas));
+
+	}
+
+	function changewidth() {
+		canvas.freeDrawingBrush.width = $("#drawing-line-width").val();
+		$(".info").html(canvas.freeDrawingBrush.width);
+	}
+
+	function changecolor() {
+		canvas.freeDrawingBrush.color = $("#drawing-color").val();
+		$(".colourinfo").html(canvas.freeDrawingBrush.color);
+	}
+
+	function savecolor() {
+		color = $("#drawing-color").val();
+		square = "<div class='coloursquare' style='background-color: ".concat(color).concat(";'></div> ");
+		if ($("#saves").children().size() == 10) {
+			$("#saves").children().last().remove();
+			$("#saves").prepend(square);
+		} else {
+			$(".nosaves").hide();
+			$("#saves").prepend(square);
+		}
+		savefavourites();
+	}
+
+	function savedrawing() {
+		secondcomparecanvas = JSON.stringify(canvas);
+		if (comparecanvas != secondcomparecanvas) {
+
+			room = getParameterByName("r");
+			$("#roomnumber").html(room);
+			data = "room=".concat(room).concat("&data=").concat(encodeURIComponent(JSON.stringify(canvas)));
+			$.ajax({
+				url: "/draw",
+				type: "POST",
+				data: data,
+				success: function(response) {
+				}
+			});
+		}
+	}
+
+	function loaddrawing() {
+		room = getParameterByName("r");
+		$("#roomnumber").html(room);
+		data = "room=".concat(room);
+		$.ajax({
+			url: "/view",
+			type: "POST",
+			data: data,
+			success: function(response) {
+				if (response !== null && response !== "") {
+					newcanvas = decodeURIComponent(response).replace("http", "https");
+					canvas.loadFromJSON(newcanvas);
+				}
+			}
+		});
+	}
+
+	function savefavourites() {
+		for (i = 10; i < 20; i++) {
+			if (document.getElementsByClassName("coloursquare")[i] !== undefined) {
+				thing = "favourite".concat(i).concat('=').concat(document.getElementsByClassName("coloursquare")[i].style.backgroundColor);
+				document.cookie = thing;
+			} else {
+				thing = "favourite".concat(i).concat('=').concat("none");
+				document.cookie = thing;
+			}
+		}
+	}
+
+	function loadfavourites() {
+		$("#saves").children().remove();
+		for (i = 10; i < 20; i++) {
+			favourite = "favourite".concat([i]);
+			color = getCookie(favourite);
+			if (color === "none" || color === "") {
+
+			} else {
+				square = "<div class='coloursquare' style='background-color: ".concat(color).concat(";'></div> ");
+				$("#saves").prepend(square);
+			}
+		}
+		if ($("#saves").children().size() > 0) {
+			$(".nosaves").hide();
+		} else {
+			$(".nosaves").show();
+		}
+	}
+
+	function clearfavourites() {
+		var cookies = document.cookie.split("; ");
+		for (var c = 0; c < cookies.length; c++) {
+			var d = window.location.hostname.split(".");
+			while (d.length > 0) {
+				var cookieBase = encodeURIComponent(cookies[c].split(";")[0].split("=")[0]) + '=; expires=Thu, 01-Jan-1970 00:00:01 GMT; domain=' + d.join('.') + ' ;path=';
+				var p = location.pathname.split('/');
+				document.cookie = cookieBase + '/';
+				while (p.length > 0) {
+					document.cookie = cookieBase + p.join('/');
+					p.pop();
+				}
+				d.shift();
+			}
+		}
+	}
+
+	function deleteobject() {
+		var activeObject = canvas.getActiveObject(),
+			activeGroup = canvas.getActiveGroup();
+		if (activeObject) {
+			if (confirm('Are you sure?')) {
+				canvas.remove(activeObject);
+			}
+		} else if (activeGroup) {
+			if (confirm('Are you sure?')) {
+				var objectsInGroup = activeGroup.getObjects();
+				canvas.discardActiveGroup();
+				objectsInGroup.forEach(function(object) {
+					canvas.remove(object);
+				});
+			}
+		}
+	}
+
+	function WAT() {
+		var search = encodeURIComponent($("#WATI").val());
+		$.ajax({
+			url: "/wolf",
+			type: "POST",
+			data: "equation=" + search,
+			success: function(response) {
+				var temp = response;
+				var count = (temp.match(/http:/g) || []).length;
+				for (var i = 1; i < count + 1; i++) {
+					var img = "http://".concat(response.split("http://")[i]);
+					fabric.Image.fromURL(img, function(oImg) {
+						var l = Math.random() * (500 - 0) + 0;
+						var t = Math.random() * (500 - 0) + 0;
+						oImg.scale(1.7);
+						oImg.set({
+							'left': l
+						});
+						oImg.set({
+							'top': t
+						});
+						canvas.add(oImg);
+					});
+				}
+			}
+		});
+	}
+
+	function loadcomments() {
+		var room = getParameterByName("r");
+		$.ajax({
+			url: "/comment?r=" + room,
+			type: "GET",
+			success: function(response) {
+				if (response !== null && response !== "") {
+					$("#messageList").html(response);
+                    //Ensure the list is always at the bottom
+                    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+				}
+			}
+		});
+	}
+	comparecanvas = JSON.stringify(canvas);
+	loaddrawing();
+	savedrawing();
+	loadcomments();
+	window.setInterval(function() {
+		savedrawing();
+	}, 1000);
+	window.setInterval(function() {
+		loadcomments();
+	}, 1000);
+	$(document).ready(function() {
+		changewidth();
+		changecolor();
+		$("#wolframBar").on("click", "#waIcon", function(){
+			$("#waSearch").toggle()
+		});
+		$("#common, #saves").on('click', ".coloursquare", function() {
+			canvas.freeDrawingBrush.color = $(this).css('background-color');
+			$("#drawing-color").val(rgb2hex(canvas.freeDrawingBrush.color));
+			$(".colourinfo").html(canvas.freeDrawingBrush.color);
+		});
+
+		$("#chatbar").on("click", "#sendMessage", function() {
+			room = getParameterByName("r");
+			comment = encodeURIComponent($("#messageBox").val());
+			comment = "<li class='comment teacher'>" + "Teacher (" + getCookie("name") + "): " + comment + "</li>";
+			$("#messageBox").val("");
+			data = "room=".concat(room).concat("&comment=").concat(comment);
+			$.ajax({
+				url: "/comment",
+				type: "POST",
+				data: data,
+				success: function(response) {
+					loadcomments();
+				}
+			});
+		});
+
+		$("#messageBox").keyup(function(event){
+	        if(event.keyCode == 13){
+	            room = getParameterByName("r");
+				comment = encodeURIComponent($("#messageBox").val());
+				comment = "<li class='comment teacher'>" + "Teacher (" + getCookie("name") + "): " + comment + "</li>";
+				$("#messageBox").val("");
+				data = "room=".concat(room).concat("&comment=").concat(comment);
+				$.ajax({
+					url: "/comment",
+					type: "POST",
+					data: data,
+					success: function(response) {
+						loadcomments();
+					}
+				});
+	        }
+	    });
+
+		// HOT KEYS
+		
+    $("#WATI").keyup(function(event){
+          if(event.keyCode == 13){
+             WAT(); 
+          }
+      });
+	});
+		
+	$(document).keydown(function(event) {
+		switch (event.which) {
+			case 8: // Backspace key
+			case 46: // Delete key
+				if (canvas.getActiveGroup()) {
+					event.preventDefault();
+					canvas.getActiveGroup().forEach(function(object) {
+						canvas.remove(object);
+					});
+				} else if (canvas.getActiveObject()) {
+					event.preventDefault();
+					canvas.remove(canvas.getActiveObject());
+				}
+				
+				break;
+
+			case 13: // Enter key
+				if ($("waSearch").is(":focus")) { // Wolfram box focused
+					WAT();
+					event.preventDefault();
+				} else if ($("messageBox").is(":focus")) { // Send box focused
+					sendMessage();
+					event.preventDefault();
+				}
+				break;
+		}
+	});
+	
+	var hexDigits = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+
+	function rgb2hex(rgb) {
+		rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+		return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+	}
+
+	function hex(x) {
+		return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+	}
+
+	function getCookie(cname) {
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) === 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return "";
+	}
+	
+	function getParameterByName(name) {
+		var url = window.location.href;
+		name = name.replace(/[\[\]]/g, "\\$&");
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+	
+	setInterval(prepareDownloadButton, 3000);
+	function prepareDownloadButton() {
+		$("#save-canvas").attr("href", canvas.toDataURL('png'));
+	}
+</script>
+
+<!-- Wolfram Alpha bar-->
+  <div id="wolframBar">
+    <img id="waIcon" class="toggle" src="static/img/icons/wolfram_red.png">
+      <div id="waSearch" class="input-group toggle">
+          <input type="text" class="form-control" id="WATI" placeholder="Solve using WolframAlpha">
+          <span class="input-group-addon" onclick="WAT()">
+              <i class="glyphicon glyphicon-search"></i>
+          </span>
+      </div>
+  </div>
+  <!--End of Wolfram Alpha bar-->
+
+  
+
+</body>
+</html>

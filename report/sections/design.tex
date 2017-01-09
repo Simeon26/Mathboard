@@ -1,0 +1,18 @@
+\chapter{Brief overview of design and implementation, including key design decisions}\label{ch:design}\vspace{-10mm}
+
+\section{Development of the idea}
+
+Initial design specifications for the prototype were based on the ideas of group collaboration in learning tools. Specifically that it is often extremely difficult to use traditional communication tools such as VoIP or instant messaging services to discuss maths, since manually typing or saying formulae is difficult, and it is almost impossible to describe even simple plots.
+
+The initial plans came in the form of a “paint” style application that was viewable live. This would allow for problems like communicating formulae and plots to be simple. We decided that implementing this could be done most simply by using a drawing library in JavaScript (fabric.js), making drawings visible to everyone in a certain room by creating new whiteboard emulations. These rooms are created and organised by the Python back-end.
+
+The idea to add functionality that made displaying mathematics came from the team’s personal use of collaborative learning tools – particularly Khan Academy, whose online lessons rely heavily on pre-recorded “whiteboard-style” content. Often in these videos, the speed at which mathematical concepts can be taught was often handicapped by the speed at which relevant plots and formulae could be drawn out and in many cases this would be exacerbated by the use of computer drawing tools. 
+
+We decided that finding a way for users to quickly and simply create clear, readable plots was important. We decided to use services provided by the wolfram alpha API, as the wolfram alpha website as very good at both interpretation of mathematical input and clean-looking output of mathematical plots and equations. Another benefit of using wolfram alpha as part of the website is that it can act as a built-in calculator in the website, giving extra functionality to the hosts of a room, without making the software any more difficult to use.
+
+The notion of adding a chat-box to the side of the whiteboard was a way of increasing the flexibility of use of the software, not only does this allow a host to teach a lesson to people non-locally without using extra software. This feature is also particularly useful if the application is to be used as part of a MOOC (a large, free, web-based class), as not only can teachers use the chat, but students can too, meaning that students can reinforce their learning as a group in the chat - one of the most meaningful features of a MOOC.
+
+\section{Design Pattern}
+The application is based around the Fabric.js library. This wraps an HTML5 canvas with useful functionality allowing for the programmatic addition of graphics, manipulation of tools on it and most importantly a serialize function that converted any graphics on the canvas to JSON.
+
+This is supported by a Python back-end which stores this JSON alongside a room identifier in the Google DataStore. This allows for the viewers to poll the back-end (supplying the room identifier) and be updated with the JSON encoded graphics.
